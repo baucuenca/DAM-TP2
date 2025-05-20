@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tp2.navigation.AppRoutes
-//import com.example.tp2.ui.screens.HomeScreen
+import com.example.tp2.ui.screens.HomeScreen
 import com.example.tp2.ui.screens.NumberGameScreen
 //import com.example.tp2.ui.screens.CitiesScreen
 import com.example.tp2.ui.theme.Tp2Theme
@@ -31,18 +31,18 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = AppRoutes.NUMBER_GAME,
+                        startDestination = AppRoutes.HOME,
                         modifier = Modifier.padding(innerPadding) // Se aplica el innerPadding al NavHost
                     ) {
-//                        composable(AppRoutes.CITIES) {
-//                            CitiesScreen(navController = navController)
-//                        }
+                        //composable(AppRoutes.CITIES) {
+                          //  CitiesScreen(navController = navController)
+                        //}
                         composable(AppRoutes.NUMBER_GAME) {
                             NumberGameScreen(navController = navController)
                         }
-//                        composable(AppRoutes.HOME) {
-//                            HomeScreen(navController = navController)
-//                        }
+                        composable(AppRoutes.HOME) {
+                            HomeScreen(navController = navController)
+                       }
                     }
                 }
             }

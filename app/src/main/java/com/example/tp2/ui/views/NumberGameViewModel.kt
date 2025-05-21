@@ -1,14 +1,18 @@
 package com.example.tp2.ui.views
 
-import com.example.tp2.data.local.entities.MaxScore
-import com.example.tp2.data.local.dao.ScoreDao
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 import androidx.compose.runtime.*
-import androidx.lifecycle.ViewModel
+import com.example.tp2.data.local.entities.MaxScore
+import com.example.tp2.data.repositories.ScoreRepository
 
-class NumberGameViewModel(private val dao: ScoreDao) : ViewModel() {
+class NumberGameViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: ScoreRepository = ScoreRepository(application)
+
     private val _currentScore = mutableIntStateOf(0)
     val currentScore: State<Int> = _currentScore
 
@@ -17,7 +21,7 @@ class NumberGameViewModel(private val dao: ScoreDao) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            dao.getMaxScore().collect { max ->
+            repository.getMaxScore().collect { max ->
                 _maxScore.intValue = max?.value ?: 0
             }
         }
@@ -25,7 +29,7 @@ class NumberGameViewModel(private val dao: ScoreDao) : ViewModel() {
 
     fun atemp(success: Boolean) {
         if (success) {
-            _currentScore.intValue++
+            _currentScore.intValue += 10
             if (_currentScore.intValue > _maxScore.intValue) {
                 updateMaxScore(_currentScore.intValue)
             }
@@ -36,7 +40,7 @@ class NumberGameViewModel(private val dao: ScoreDao) : ViewModel() {
 
     private fun updateMaxScore(new: Int) {
         viewModelScope.launch {
-            dao.insertMaxScore(MaxScore(value = new))
+            repository.insertMaxScore(MaxScore(value = new))
         }
     }
 }

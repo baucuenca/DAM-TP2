@@ -1,11 +1,11 @@
-package com.example.tp2.ui.screens // Your package structure
+package com.example.tp2.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState // Import for scrollState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll // Import for verticalScroll
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -31,7 +31,6 @@ fun CitiesScreen(
     citiesViewModel: CitiesViewModel = viewModel(),
     navController: NavController
 ) {
-
     val allCities by citiesViewModel.allCities.collectAsState()
     val message by citiesViewModel.message.observeAsState()
     val queriedCity by citiesViewModel.queriedCity.observeAsState()
@@ -42,14 +41,12 @@ fun CitiesScreen(
     val cityInputText by citiesViewModel.cityInput.collectAsState()
     val populationInputText by citiesViewModel.populationInput.collectAsState()
 
-
     var queryCityName by remember { mutableStateOf("") }
     var deleteCityName by remember { mutableStateOf("") }
     var deleteByCountryName by remember { mutableStateOf("") }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-
 
     LaunchedEffect(message) {
         message?.let {
@@ -66,11 +63,20 @@ fun CitiesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Capitales del Mundo") })
+            TopAppBar(
+                title = { Text("Capitales del Mundo") },
+                navigationIcon = {
+                    TextButton(
+                        onClick = { navController.navigate("home") },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Text("Volver")
+                    }
+                }
+            )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
-        // Get the scroll state
         val scrollState = rememberScrollState()
 
         Column(
@@ -81,7 +87,6 @@ fun CitiesScreen(
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,7 +126,6 @@ fun CitiesScreen(
             }
 
             Divider(modifier = Modifier.fillMaxWidth().height(1.dp).padding(vertical = 8.dp))
-
 
             Column(
                 modifier = Modifier
@@ -165,7 +169,6 @@ fun CitiesScreen(
 
             Divider(modifier = Modifier.fillMaxWidth().height(1.dp).padding(vertical = 8.dp))
 
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,7 +196,6 @@ fun CitiesScreen(
             }
 
             Divider(modifier = Modifier.fillMaxWidth().height(1.dp).padding(vertical = 8.dp))
-
 
             Column(
                 modifier = Modifier
@@ -223,7 +225,6 @@ fun CitiesScreen(
 
             Divider(modifier = Modifier.fillMaxWidth().height(1.dp).padding(vertical = 8.dp))
 
-            // List of all cities (will scroll within the main Column's scroll)
             Text("Todas las Ciudades Capitales", fontSize = 22.sp, style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
             if (allCities.isEmpty()) {
                 Text("No hay ciudades registradas.", modifier = Modifier.padding(top = 16.dp))
@@ -231,7 +232,7 @@ fun CitiesScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 500.dp) // Example max height, adjust as needed
+                        .heightIn(max = 500.dp)
                 ) {
                     items(allCities) { city ->
                         CityItem(city = city, citiesViewModel = citiesViewModel)
@@ -240,7 +241,6 @@ fun CitiesScreen(
             }
         }
     }
-
 
     if (showModifyDialog) {
         cityToModify?.let { city ->

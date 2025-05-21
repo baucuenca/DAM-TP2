@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = AppRoutes.CITIES,
-                        modifier = Modifier.padding(innerPadding) // Se aplica el innerPadding al NavHost
+                        startDestination = AppRoutes.HOME,
+                        modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(AppRoutes.CITIES) {
                             CitiesScreen(navController = navController)

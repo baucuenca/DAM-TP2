@@ -5,10 +5,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.tp2.data.local.dao.CapitalCityDao
 import com.example.tp2.data.local.entities.CapitalCity
+import com.example.tp2.data.local.entities.MaxScore
+import com.example.tp2.data.local.dao.ScoreDao
 
-@Database(entities = [CapitalCity::class], version = 2, exportSchema = false)
+@Database(entities = [MaxScore::class, CapitalCity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun capitalCityDao(): CapitalCityDao
+    abstract fun scoreDao(): ScoreDao
 
     companion object {
         @Volatile

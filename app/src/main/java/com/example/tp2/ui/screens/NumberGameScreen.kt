@@ -33,111 +33,139 @@ fun NumberGameScreen(navController: NavController) {
     val numeroAdivinarVisible by remember { mutableIntStateOf(5) } // Solo para visualización en el front-end
 
     Scaffold { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
         ) {
-            // Puntuación Actual y Puntuación Máxima
-            Text(
-                text = "Puntuación Actual: $puntuacionActual",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 4.dp),
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = "Puntuación Máxima: $puntuacionMaxima",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 32.dp),
-                textAlign = TextAlign.Center
-            )
-
-            // Número grande en el centro (aquí solo un marcador de posición)
-            Text(
-                text = "$numeroAdivinarVisible", // Este sería el número a adivinar (ej: 5)
-                fontSize = 100.sp,
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(bottom = 32.dp)
-            )
-
-            // Input para el usuario
-            OutlinedTextField(
-                value = numeroUsuario,
-                onValueChange = { newValue ->
-                    // Permite solo números y limita a un dígito (del 1 al 5)
-                    if (newValue.length <= 1 && newValue.all { it.isDigit() }) {
-                        numeroUsuario = newValue
-                    }
-                },
-                label = { Text("Ingresa un número (1-5)") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth(0.6f) // Ancho del input
-                    .padding(bottom = 16.dp),
-                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
-            )
-
-            // Botón de ejemplo para "Adivinar" (sin lógica de back-end)
+            // Botón Volver en la esquina superior derecha
             Button(
-                onClick = {
-                    // Simulación de un intento para mostrar los resultados
-                    // En una implementación real, aquí se llamaría a la lógica de adivinanza
-                    val aciertoSimulado = (numeroUsuario == "3") // Simulación: acierta si ingresa '3'
-                    resultadosIntentos.add(0, Intento(numeroUsuario, aciertoSimulado))
-                    numeroUsuario = "" // Limpiar el input después del intento
-                },
-                enabled = numeroUsuario.isNotBlank(), // Habilitar el botón si hay algo en el input
-                modifier = Modifier.padding(bottom = 32.dp)
+                onClick = { navController.navigate("home") },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
             ) {
-                Text("Adivinar")
+                Text("Volver")
             }
 
-            // Registro de resultados
-            Text(
-                text = "Resultados:",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 64.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
             ) {
-                items(resultadosIntentos) { intento ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                    ) {
-                        Column(
+                // Puntuación Actual y Puntuación Máxima
+                Text(
+                    text = "Puntuación Actual: $puntuacionActual",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = "Puntuación Máxima: $puntuacionMaxima",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 32.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                // Número grande en el centro (aquí solo un marcador de posición)
+                Text(
+                    text = "$numeroAdivinarVisible", // Este sería el número a adivinar (ej: 5)
+                    fontSize = 100.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(bottom = 32.dp)
+                )
+
+                // Input para el usuario
+                OutlinedTextField(
+                    value = numeroUsuario,
+                    onValueChange = { newValue ->
+                        // Permite solo números y limita a un dígito (del 1 al 5)
+                        if (newValue.length <= 1 && newValue.all { it.isDigit() }) {
+                            numeroUsuario = newValue
+                        }
+                    },
+                    label = { Text("Ingresa un número (1-5)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f) // Ancho del input
+                        .padding(bottom = 16.dp),
+                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                )
+
+                // Botón de ejemplo para "Adivinar" (sin lógica de back-end)
+                Button(
+                    onClick = {
+                        // Simulación de un intento para mostrar los resultados
+                        // En una implementación real, aquí se llamaría a la lógica de adivinanza
+                        val aciertoSimulado =
+                            (numeroUsuario == "3") // Simulación: acierta si ingresa '3'
+                        resultadosIntentos.add(0, Intento(numeroUsuario, aciertoSimulado))
+                        numeroUsuario = "" // Limpiar el input después del intento
+                    },
+                    enabled = numeroUsuario.isNotBlank(), // Habilitar el botón si hay algo en el input
+                    modifier = Modifier.padding(bottom = 32.dp)
+                ) {
+                    Text("Adivinar")
+                }
+
+                // Registro de resultados
+                Text(
+                    text = "Resultados:",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(resultadosIntentos) { intento ->
+                        Card(
                             modifier = Modifier
-                                .padding(16.dp)
                                 .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
-                            Text(
-                                text = "Número ingresado: ${intento.numeroIngresado}",
-                                fontSize = 18.sp
-                            )
-                            Text(
-                                text = if (intento.esAcierto) "¡Adivinaste!" else "Fallaste",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = if (intento.esAcierto) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "Número ingresado: ${intento.numeroIngresado}",
+                                    fontSize = 18.sp
+                                )
+                                Text(
+                                    text = if (intento.esAcierto) "¡Adivinaste!" else "Fallaste",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = if (intento.esAcierto) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                                )
+                            }
                         }
                     }
                 }
+
+                // Botón para volver al Home
+                Button(
+                    onClick = { navController.navigate("home") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp)
+                ) {
+                    Text("Volver al inicio")
+                }
+
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

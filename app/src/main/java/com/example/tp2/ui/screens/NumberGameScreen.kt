@@ -14,19 +14,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tp2.ui.views.NumberGameViewModel
+
 
 // Clase de datos para representar un resultado de intento
 data class Intento(val numeroIngresado: String, val esAcierto: Boolean)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NumberGameScreen(navController: NavController) {
+fun NumberGameScreen(
+    numberGameViewModel: NumberGameViewModel = viewModel(),
+    navController: NavController)
+    {
     // Estados para los elementos de la UI
     var numeroUsuario by remember { mutableStateOf("") }
-    val puntuacionActual by remember { mutableIntStateOf(0) } // Solo para mostrar, no se actualiza
-    val puntuacionMaxima by remember { mutableIntStateOf(0) } // Solo para mostrar, no se actualiza
+    val puntuacionActual by numberGameViewModel.currentScore
+    val puntuacionMaxima by numberGameViewModel.maxScore
     val resultadosIntentos = remember { mutableStateListOf<Intento>() }
 
     // El número "grande" en el centro, aquí es solo un marcador de posición
@@ -86,11 +92,11 @@ fun NumberGameScreen(navController: NavController) {
             // Botón de ejemplo para "Adivinar" (sin lógica de back-end)
             Button(
                 onClick = {
-                    // Simulación de un intento para mostrar los resultados
-                    // En una implementación real, aquí se llamaría a la lógica de adivinanza
-                    val aciertoSimulado = (numeroUsuario == "3") // Simulación: acierta si ingresa '3'
-                    resultadosIntentos.add(0, Intento(numeroUsuario, aciertoSimulado))
-                    numeroUsuario = "" // Limpiar el input después del intento
+                    val numeroAleatorio = (1..5).random()
+                    val acierto = numeroUsuario == numeroAleatorio.toString()
+                    resultadosIntentos.add(0, Intento(numeroUsuario, acierto))
+                    numberGameViewModel.atemp(acierto)
+                    numeroUsuario = ""
                 },
                 enabled = numeroUsuario.isNotBlank(), // Habilitar el botón si hay algo en el input
                 modifier = Modifier.padding(bottom = 32.dp)
